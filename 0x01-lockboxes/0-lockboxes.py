@@ -4,6 +4,8 @@
 
 def canUnlockAll(boxes):
     """Check if all Boxes can be Opened"""
+    if not boxes:
+        return
     keys = boxes[0]  # since the first box is always unlock
     result = set(recursion(boxes, keys, 0))
     result.add(0)  # include to result if not already present
