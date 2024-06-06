@@ -20,12 +20,10 @@ def recursion(boxes, keys, index):
         return keys
     key_idx = keys[index]
 
-    if key_idx < len(boxes):
-        if not (set(boxes[key_idx]).issubset(keys)):
-            diff = list(set(boxes[key_idx]).difference(set(keys)))
-            keys.extend(diff)
-            # index += 1
-            # return recursion(boxes, keys, index)
-        index += 1
-        return recursion(boxes, keys, index)
+    if key_idx >= len(boxes):
+        return keys
+    elif not (set(boxes[key_idx]).issubset(keys)):
+        diff = list(set(boxes[key_idx]).difference(set(keys)))
+        keys.extend(diff)
     index += 1
+    return recursion(boxes, keys, index)
