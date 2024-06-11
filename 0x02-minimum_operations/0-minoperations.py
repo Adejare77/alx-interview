@@ -2,10 +2,12 @@
 """Dynamic Programming"""
 from math import sqrt
 
+
 def minOperations(n):
     """returns length of Minimum Operations"""
     result = recursive_operation(n)[0]
     return len(result)
+
 
 def recursive_operation(n):
     """returns Minimum Operations"""
