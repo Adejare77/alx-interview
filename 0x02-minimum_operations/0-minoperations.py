@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/python3
 """Dynamic Programming"""
 from math import sqrt
 
