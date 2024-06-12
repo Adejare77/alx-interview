@@ -39,11 +39,13 @@ def recursive_operation(n):
     h = len(operations[1])
     while h < n:
         if not n % h:  # if we are to multiply we'll use Copy and Paste
-            operations[0].extend(['Copy All', 'Paste'])
-            operations[1] = operations[1] + (h * 'h')
             stored_cpy = h
+            operations[0].extend(['Copy All', 'Paste'])
+            operations[1] = operations[1] + (stored_cpy * 'h')
+            # h = h + stored_cpy
         else:
             operations[0].append('Paste')
             operations[1] = operations[1] + (stored_cpy * 'h')
-        h = 2 * h
+            # h = h + stored_cpy
+        h = h + stored_cpy
     return operations
