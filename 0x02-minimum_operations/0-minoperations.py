@@ -43,12 +43,8 @@ def recursive_operation(n):
             operations[0].extend(['Copy All', 'Paste'])
             operations[1] = operations[1] + (stored_cpy * 'h')
             h = h + stored_cpy
-        elif stored_cpy:
+        else:
             operations[0].append('Paste')
             operations[1] = operations[1] + (stored_cpy * 'h')
             h = h + stored_cpy
-        else:
-            operations[0].append('Paste')
-            operations[1] = operations[1] + 'h'
-            h += 1
     return operations
