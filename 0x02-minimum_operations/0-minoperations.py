@@ -11,7 +11,7 @@ def minOperations(n):
 
 def recursive_operation(n):
     """returns Minimum Operations"""
-    if n <= 1:
+    if (not n or n <= 1):
         return [[], 'h']
     if n <= 2:
         return [['Copy All', 'Paste'], 'hh']
