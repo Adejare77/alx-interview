@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Dynamic Programming"""
 from math import sqrt
+from time import sleep
 
 
 def minOperations(n):
@@ -33,9 +34,14 @@ def recursive_operation(n):
 
     else:  # not an indivisible number
         operations = recursive_operation(2)
-        for h in range(len(operations), n):
-            operations[0].append('Paste')
-            operations[1] = operations[1] + 'h'
+        # for h in range(len(operations), n):
+        #     operations[0].append('Paste')
+        #     operations[1] = operations[1] + 'h'
+
+        paste = list(['Paste']) * (n - 2)
+        store = 'h' * (n - 2)
+        operations[0].extend(paste)
+        operations[1] = operations[1] + store
         return operations
 
     stored_cpy = 0
