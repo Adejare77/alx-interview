@@ -12,11 +12,11 @@ size = 0
 dict_size_count = {}
 list_size_count = []
 status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+# \b\w+\b for hostname instead of IP e.g rashisky
 regex1 = r'\b\w+\b|((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.)'
 regex2 = r'{3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\-?\s?'
 ip_addr_pattern = regex1 + regex2
 hyphen_pattern = re.compile(r'\s?-\s?(?=\[)')
-# date_pattern = re.compile(r'(?<=\s-\s)(\[.*\])|.*\d(?<=-)(\[.*\])')
 date_pattern = re.compile(r'(?<=\s-\s)(\[.*\])|(?<=-)(\[.*\])')
 method_pattern = re.compile(r'(?<=\]\s)"GET /projects/260 HTTP/1.1"')
 size_pattern = re.compile(r'\d+$')
