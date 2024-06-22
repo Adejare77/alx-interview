@@ -121,3 +121,6 @@ for line in sys.stdin:
 
     if len(list_size_count) == 10:
         update_key(list_size_count)
+
+if len(list_size_count) < 10:
+    update_key(list_size_count)
