@@ -11,47 +11,80 @@ import signal
 size = 0
 dict_size_count = {}
 list_size_count = []
+status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+regex1 = r'((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.)'
+regex2 = r'{3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\s'
+ip_addr_pattern = regex1 + regex2
+hyphen_pattern = re.compile(r'\s-\s(?=\[)')
+date_pattern = re.compile(r'(?<=\s-\s)\[.*\]')
+method_pattern = re.compile(r'(?<=\]\s)"GET /projects/260 HTTP/1.1"')
+size_pattern = re.compile(r'\d+$')
+code = re.compile(r'(?<="GET \/projects\/260 HTTP\/1.1"\s)\d{3}(?!$)')
 
 
 def validate_line(line):
     """validate the lines from stdin"""
-    check_list = []
-    split_line = re.split(r' (?=(?:[^"\[\]]*["\[\]][^"\[]*["\]])*[^"\[\]]*$)',
-                          line)
-    ip_address = validate_ip_address(split_line[0])
-    dash = split_line[1] == '-'
-    date = validate_date(split_line[2])
-    response = split_line[3] == '"GET /projects/260 HTTP/1.1"'
-    status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
-    status_code = split_line[4] if split_line[4] in status_codes else None
-    file_size = validate_file_size(split_line[5])
-    check_list.extend([ip_address, dash, date,
-                       response, status_code, file_size])
-    return check_list
+    ip_address = validate_ip_address(line)
+    hyphen = validate_hyphen(line)
+    date = validate_date(line)
+    response_header = validate_resp_method(line)
+    status_code = validate_status_code(line)
+    file_size = validate_file_size(line)
+    # print("---------------------------------")
+    # print([ip_address, hyphen, date, response_header,
+    #             status_code, file_size])
+    # print("---------------------------------")
+    if status_codes:
+        return [ip_address, hyphen, date, response_header,
+                status_code, file_size]
+    return [ip_address, hyphen, date, response_header, file_size]
 
 
-def validate_date(timestamp):
-    """validate the timestamp provided"""
-    try:
-        timestamp = timestamp.strip('[]')
-        datetime.fromisoformat(timestamp)
-        return True
-    except Exception as e:
-        return False
+def validate_date(arg):
+    """validate the timestamp"""
+    timestamp = date_pattern.search(arg)
+    if timestamp:
+        try:
+            timestamp = timestamp.group().strip('[]')
+            datetime.fromisoformat(timestamp)
+            return True
+        except Exception:
+            return False
+    return False
 
 
 def validate_ip_address(address):
     """validate IP address"""
-    pattern = re.compile(r'^((25[0-5]|\
-        2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|\
-            2[0-4]\d|1\d{2}|[1-9]?\d)$')
-    return address if pattern.match(address) else None
+    pattern = re.compile(r'{}'.format(ip_addr_pattern))
+
+    return True if pattern.match(address) else None
 
 
-def validate_file_size(size):
-    """validate file size as number"""
-    pattern = re.compile(r'^\d+$')
-    return int(size) if pattern.match(size) else None
+def validate_resp_method(resp_method):
+    """validate response header"""
+
+    return True if method_pattern.search(resp_method) else False
+
+
+def validate_file_size(file_size):
+    """validate file size"""
+    size = size_pattern.search(file_size)
+
+    return int(size.group()) if size else False
+
+
+def validate_status_code(status_code):
+    """validate status code"""
+    status = code.search(status_code)
+    if status and status.group() in status_codes:
+        return status.group()
+    return 'Unknown'
+
+
+def validate_hyphen(hyphen):
+    """validate the hyphen"""
+
+    return True if hyphen_pattern.search(hyphen) else False
 
 
 def update_key(status_number):
@@ -61,7 +94,9 @@ def update_key(status_number):
 
     for status, file_size in status_number:
         size += file_size
-        dict_size_count[status] = dict_size_count.get(status, 0) + 1
+        if status != 'Unknown':
+            dict_size_count[status] = dict_size_count.get(status, 0) + 1
+
     status_number.clear()
     print("File size:", size)
     for key, value in sorted(dict_size_count.items()):
@@ -83,8 +118,6 @@ for line in sys.stdin:
     result = validate_line(line.strip())
     if all(result):
         list_size_count.append((result[-2], result[-1]))
+
     if len(list_size_count) == 10:
         update_key(list_size_count)
-
-# Make sure to update at the end if interrupted
-# update_key(list_size_count)
