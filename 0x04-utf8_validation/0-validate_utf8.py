@@ -19,9 +19,10 @@ def validUTF8(data):
     encoding. Return True if it is, else False
     """
     # For Ascii characters
-    min_val = 0
-    max_val = 255
     for values in data:
-        if not (values >= min_val and values <= max_val):
+        # 'b' converts to bytes
+        # Where 8 gives the width. 0 pads it if needed to reach width size
+        one_byte_utf8_seq = format(values, '08b')
+        if len(one_byte_utf8_seq) != 8:
             return False
     return True
