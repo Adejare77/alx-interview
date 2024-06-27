@@ -39,12 +39,12 @@ def validUTF8(data):
         if n_bytes == 0:
             if bin_rep[0] == '0':
                 continue
-            elif bin_rep[:3] == '110':
-                n_bytes = 1
-            elif bin_rep[:4] == '1110':
-                n_bytes = 2
-            elif bin_rep[:5] == '11110':
-                n_bytes = 3
+            # elif bin_rep[:3] == '110':
+            #     n_bytes = 1
+            # elif bin_rep[:4] == '1110':
+            #     n_bytes = 2
+            # elif bin_rep[:5] == '11110':
+            #     n_bytes = 3
             else:
                 return False
         else:
