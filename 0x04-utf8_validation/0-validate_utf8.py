@@ -18,11 +18,13 @@ def validUTF8(data):
     """determines if a given data set represents a valid UTF-8
     encoding. Return True if it is, else False
     """
-    # For Ascii characters
-    for values in data:
-        # 'b' converts to bytes
-        # Where 8 gives the width. 0 pads it if needed to reach width size
-        one_byte_utf8_seq = format(values, '08b')
-        if len(one_byte_utf8_seq) != 8:
+    one_byte_utf8_seq = 1 << 7  # MSB mask for single-byte is '1' in 1000000
+
+    for item in data:
+        # when item is compared with one_byte_utf8_seq
+        # if item < 128, then the MSB will always be '0'
+        # if item  >= 128, the item MSB will be 1 OR
+        # length of item and one_byte_utf8_seq will differ
+        if one_byte_utf8_seq & item:
             return False
     return True
