@@ -27,4 +27,6 @@ def validUTF8(data):
         # length of item and one_byte_utf8_seq will differ
         if one_byte_utf8_seq & item:
             return False
+        elif not (item >=0 and item <= 127):
+            return False
     return True
