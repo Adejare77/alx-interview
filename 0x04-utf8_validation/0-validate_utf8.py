@@ -22,7 +22,7 @@ def validUTF8(data):
     for values in data:
         # 'b' converts to bytes
         # Where 8 gives the width. 0 pads it if needed to reach width size
-        one_byte_utf8_seq = format(values, '08b')
+        one_byte_utf8_seq = format(values, '07b')
         if len(one_byte_utf8_seq) != 8:
             return False
     return True
