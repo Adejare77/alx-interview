@@ -25,8 +25,8 @@ def validUTF8(data):
         # if item < 128, then the MSB will always be '0'
         # if item  >= 128, the item MSB will be 1 OR
         # length of item and one_byte_utf8_seq will differ
-        if one_byte_utf8_seq & item:
-            return False
-        elif not (item >=0 and item <= 127):
+        # if one_byte_utf8_seq & item:
+        #     return False
+        if not (item >= 0 and item <= 127):
             return False
     return True
