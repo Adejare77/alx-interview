@@ -1,16 +1,17 @@
 #!/usr/bin/env
-
+""" NQueens """
 
 def solveNQueens(n):
+    """ set-up conditions for NQueens """
     col = set()  # To ensure save already used column
     posDiag = set()  # (r + c) to check diagonally downLeft-upRight
     negDiag = set()  # (r - c) to check diagonally upLeft-DownRight
 
     tmpResult = []
     result = []
-    chessBoard = [["."] * n for _ in range(n)]
 
     def backtrackAlgorithm(r):
+        """ NQueens Backtracking Algorithm """
         if r == n:
             result.append(tmpResult.copy())  # copy tmpR to not clean result
             return
