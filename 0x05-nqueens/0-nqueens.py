@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ NQueens """
 
+
 def solveNQueens(n):
     """ set-up conditions for NQueens """
     col = set()  # To ensure save already used column
