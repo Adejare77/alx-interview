@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/python3
 """ NQueens """
 
 def solveNQueens(n):
