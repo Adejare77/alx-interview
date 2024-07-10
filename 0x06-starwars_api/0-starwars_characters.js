@@ -8,16 +8,10 @@ if (process.argv.length === 2) {
 
 const url = 'https://swapi-api.alx-tools.com/api/films/'.concat(process.argv[2]);
 
-// get the movie url
-async function movieCharacters (url) {
-  const response = await myPromise(url);
-  const moviesUrl = JSON.parse(response).characters;
-  return moviesUrl;
-}
-
 // for each movie url, find their character name
 async function charactersName () {
-  const charactersUrls = await movieCharacters(url);
+  const response = await myPromise(url);
+  const charactersUrls = JSON.parse(response)['characters']
   for (const characterUrl of charactersUrls) {
     try {
       const response = await myPromise(characterUrl);
