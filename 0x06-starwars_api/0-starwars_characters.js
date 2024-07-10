@@ -11,7 +11,7 @@ const url = 'https://swapi-api.alx-tools.com/api/films/'.concat(process.argv[2])
 // for each movie url, find their character name
 async function charactersName () {
   const response = await myPromise(url);
-  const charactersUrls = JSON.parse(response)['characters']
+  const charactersUrls = JSON.parse(response).characters;
   for (const characterUrl of charactersUrls) {
     try {
       const response = await myPromise(characterUrl);
