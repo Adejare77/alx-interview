@@ -17,5 +17,5 @@ def rotate_2d_matrix(matrix):
 
     # clear the matrix (This wouldn't affect the zipped_list)
     matrix.clear()
-    for i in range(len(zipped_list)):
-        matrix.append(list(zipped_list[i]))
+    for element in zipped_list:
+        matrix.append(list(element))
