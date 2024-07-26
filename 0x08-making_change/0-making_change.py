@@ -4,8 +4,8 @@
 
 def makeChange(coin, total):
     """ change comes from within """
+    solution = []
     result = []
-    final_result = []
     tmp_list = coin.copy()
     remainder = total
     track_remainder = []
@@ -14,42 +14,47 @@ def makeChange(coin, total):
     def dynamic_change_algorithm(coin, remainder, total):
         """ determine the fewest number of coins needed to meet a
         given amount total"""
-        if sum(result) == total:
-            final_result.append(result.copy())
-            return final_result
+        if sum(solution) == total:
+            # result.append(solution.copy())
+            result.append(len(solution))
+            return result
 
         while (max(tmp_list) > remainder):
             tmp_list.remove(max(tmp_list))
             # In case all tmp_list becomes empty
             if not tmp_list:
+                result.clear()
+                track.clear()
+                track_remainder.clear()
                 return
 
+        max_list_val = max(tmp_list)
         track.append(tmp_list.copy())
-        result.append(max(tmp_list))
+        solution.append(max_list_val)
         track_remainder.append(remainder)
 
-        remainder = remainder - max(tmp_list)
+        remainder = remainder - max_list_val
 
         if (remainder >= 0):
             dynamic_change_algorithm(coin, remainder, total)
 
-        result.pop()
-        last_item = track.pop()
-        last_item.remove(max(last_item))
-        remainder = track_remainder.pop()
+        if track:
+            solution.pop()
+            last_item = track.pop()
+            last_item.remove(max(last_item))
+            remainder = track_remainder.pop()
 
-        if last_item:
-            tmp_list.clear()
-            tmp_list.extend(last_item)
-            dynamic_change_algorithm(coin, remainder, total)
+            if last_item:
+                tmp_list.clear()
+                tmp_list.extend(last_item)
+                dynamic_change_algorithm(coin, remainder, total)
 
     if total <= 0:
         return 0
 
     dynamic_change_algorithm(coin, remainder, total)
 
-    if not final_result:
+    if not result:
         return -1
 
-    sorted_result = sorted(final_result, key=len)
-    return len(sorted_result[0])
+    return min(result)
