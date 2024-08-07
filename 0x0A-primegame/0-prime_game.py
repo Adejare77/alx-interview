@@ -19,9 +19,8 @@ def isPrime(n):
         return False
     else:
         sqrtOfNumber = int(n ** (1/2))
-        for i in range(3, sqrtOfNumber):
+        for i in range(3, sqrtOfNumber + 1, 2):
             if (n % i == 0):
-                print(i)
                 return False
         return True
 
