@@ -3,7 +3,7 @@
 import math
 
 
-def isPrime(n: int) -> bool:
+def isPrime(n):
     """check if n is a prime number or not
 
     Args:
