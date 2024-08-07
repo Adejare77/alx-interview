@@ -13,7 +13,7 @@ def isPrime(n):
     """
     if (n < 2):
         return False
-    elif (n == 2):
+    elif (n <= 3):
         return True
     elif (n % 2 == 0):
         return False
@@ -26,30 +26,55 @@ def isPrime(n):
         return True
 
 
+# def isWinner(x, nums):
+#     """ Determine who is the winner between Maria and Ben """
+#     if not x or not nums:
+#         return None
+
+#     users = {'Maria': 0, 'Ben': 0}
+#     for round in nums:
+#         currentPlayer = True
+#         availableSlots = list(range(2, round + 1))
+#         while availableSlots:
+#             if isPrime(availableSlots[0]):
+#                 currentPlayer = not currentPlayer
+#             availableSlots.remove(availableSlots[0])
+#         if not currentPlayer:
+#             users['Maria'] += 1
+#         else:
+#             users['Ben'] += 1
+
+#     if users['Maria'] == users['Ben']:
+#         return None
+#     winner = max(users, key=users.get)
+#     return winner
+
 def isWinner(x, nums):
     """ Determine who is the winner between Maria and Ben """
     if not x or not nums:
         return None
 
+    def play_game(n):
+        availableSlots = set(range(2, n + 1))
+        currentPlayer = True  # True for Maria, false for Ben
+        while availableSlots:
+            # Find the smallest prime number
+            prime = min([num for num in availableSlots if
+                         isPrime(num)], default=None)
+            if not prime:
+                break
+            # Remove the prime and all its multiples
+            availableSlots.difference_update(range(prime, n + 1, prime))
+            currentPlayer = not currentPlayer
+
+        # Determine the winner based on who cannot make a move
+        return 'Maria' if not currentPlayer else 'Ben'
+
     users = {'Maria': 0, 'Ben': 0}
     for round in nums:
-        currentPlayer = True
-        availableSlots = list(range(2, round + 1))
-        # print('avalable slots:', availableSlots)
-        while availableSlots:
-            if isPrime(availableSlots[0]):
-                currentPlayer = not currentPlayer
-            availableSlots.remove(availableSlots[0])
-        if not currentPlayer:
-            users['Maria'] = users.get('Maria', 0) + 1
-        else:
-            users['Ben'] = users.get('Ben', 0) + 1
-        # print(f'Winner for this round {round} is: {users}')
+        winner = play_game(round)
+        users[winner] += 1
 
-    # print(users)
-    scores = list(users.values())
-    draw = all(score == scores[0] for score in scores)
-    if draw:
+    if users['Maria'] == users['Ben']:
         return None
-    winner = max(users, key=users.get)
-    return winner
+    return max(users, key=users.get)
