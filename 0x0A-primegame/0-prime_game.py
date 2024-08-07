@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Prime Game"""
 
+
 def isPrime(n):
     """check if n is a prime number or not
 
@@ -27,6 +28,9 @@ def isPrime(n):
 
 def isWinner(x, nums):
     """ Determine who is the winner between Maria and Ben """
+    if not x or not nums:
+        return None
+
     users = {'Maria': 0, 'Ben': 0}
     for round in nums:
         currentPlayer = True
@@ -43,5 +47,9 @@ def isWinner(x, nums):
         # print(f'Winner for this round {round} is: {users}')
 
     # print(users)
+    scores = list(users.values())
+    draw = all(score == scores[0] for score in scores)
+    if draw:
+        return None
     winner = max(users, key=users.get)
     return winner
