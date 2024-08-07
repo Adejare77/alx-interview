@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """Prime Game"""
-import math
-
 
 def isPrime(n):
     """check if n is a prime number or not
@@ -19,7 +17,7 @@ def isPrime(n):
     elif (n % 2 == 0):
         return False
     else:
-        sqrtOfNumber = math.floor(n ** 1/2)
+        sqrtOfNumber = int(n ** (1/2))
         for i in range(3, sqrtOfNumber):
             if (n % i == 0):
                 print(i)
