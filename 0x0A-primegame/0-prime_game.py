@@ -27,17 +27,27 @@ def isPrime(n):
 
 def isWinner(x, nums):
     """ Determine who is the winner between Maria and Ben """
-    if not x or not nums:
+    if x < 1 or not nums:
         return None
-
+    # sort the given arrays. The purpose is to avoid repetition of
+    # predetermined prime numbers by previous round (prev_round)
+    sorted_nums = sorted(nums)  # sort them to know who won last
     users = {'Maria': 0, 'Ben': 0}
-    for round in nums:
-        currentPlayer = True
-        availableSlots = list(range(2, round + 1))
+    prev_round = None  # previously determined round
+    # True means Maria's turn, while False means Ben's turn to play
+    currentPlayer = True
+
+    for round in sorted_nums:
+        if prev_round:
+            availableSlots = list(range(prev_round + 1, round + 1))
+        else:
+            availableSlots = list(range(2, round + 1))
+        prev_round = round
         while availableSlots:
             if isPrime(availableSlots[0]):
                 currentPlayer = not currentPlayer
             availableSlots.remove(availableSlots[0])
+
         if not currentPlayer:
             users['Maria'] += 1
         else:
